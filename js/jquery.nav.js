@@ -178,33 +178,33 @@
 		},
 
 		scrollChange: function() {
-			// var windowTop = this.$win.scrollTop();
-			// var position = this.getSection(windowTop);
-			// var $parent;
+			var windowTop = this.$win.scrollTop();
+			var position = this.getSection(windowTop);
+			var $parent;
 
-			// //If the position is set
-			// if(position !== null) {
-			// 	$parent = this.$elem.find('a[href$="#' + position + '"]').parent();
+			//If the position is set
+			if(position !== null) {
+				$parent = this.$elem.find('a[href$="#' + position + '"]').parent();
 
-			// 	//If it's not already the current section
-			// 	if(!$parent.hasClass(this.config.currentClass)) {
-			// 		//Change the highlighted nav item
-			// 		this.adjustNav(this, $parent);
+				//If it's not already the current section
+				if(!$parent.hasClass(this.config.currentClass)) {
+					//Change the highlighted nav item
+					this.adjustNav(this, $parent);
 
-			// 		//If there is a scrollChange callback
-			// 		if(this.config.scrollChange) {
-			// 			this.config.scrollChange($parent);
-			// 		}
-			// 	}
-			// }
+					//If there is a scrollChange callback
+					if(this.config.scrollChange) {
+						this.config.scrollChange($parent);
+					}
+				}
+			}
 		},
 
 		scrollTo: function(target, callback) {
-			// var offset = $(target).offset().top - this.config.padding;
+			var offset = $(target).offset().top - this.config.padding;
 
-			// $('html, body').animate({
-			// 	scrollTop: offset
-			// }, this.config.scrollSpeed, this.config.easing, callback);
+			$('html, body').animate({
+				scrollTop: offset
+			}, this.config.scrollSpeed, this.config.easing, callback);
 		},
 
 		unbindInterval: function() {
