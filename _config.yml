@@ -5,7 +5,7 @@ header-img: img/home-bg.jpg
 email: leehong2004@gmail.com
 description: "Do one thing at a time, and do well"
 keyword: ""
-url: ""              # your host, for absolute URL
+url: "http://playingfingers.com"              # your host, for absolute URL
 baseurl: ""          # for example, '/blog' if your blog hosted on 'host/blog'
 
 
