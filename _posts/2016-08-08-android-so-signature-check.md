@@ -11,15 +11,15 @@ tags:
     - 安全性
 ---
 
-## 背景
-
 
 随着移动互联网的发展，移动应用的安全问题越来越突显，特别是涉及到钱相关的产品，前段一段时间，我们的Android客户端产品被人破解了，修改了一些代码，重新打包签名后，就可以免费获得资源，对我们的收入造成了一些影响，移动产品安全性就不得不提重视，安全性这个话题很大，包括客户端、服务端、数据存储、协议等很多方面，这里只是从客户端的角度来讨论一上如何保证客户端产品的安全性，抛砖引玉，也希望大家多提意见和建议。
 
+
 下面主要从以下几个方面来展开讨论：
 
-## C/S协议安全
+---
 
+## C/S协议安全
 
 在不使用https的前提下，要保证C/S协议的安全，一般都会进行参数的校验，以及参数加密，客户端和服务端会约定一个固定的字符串作为key，对于客户端来说，这个key应该放到哪里？最早之前，我们是直接放到Java代码中，这样可以说没有什么安全性，后来为了稍微更加安全一点，把这些key都统一放到so库中实现，虽然也不能保证绝对安全，但起码可以增加破解的难度。
 
@@ -323,7 +323,6 @@ void ByteToHexStr(const char *source, char *dest, int sourceLen) {
 * [Android.mk](https://developer.android.com/ndk/guides/android_mk.html)
 * [Application.mk](https://developer.android.com/ndk/guides/application_mk.html)
 
-
 如果是使用gradle构建的话，需要作一点配置，添加一个 `ndk` block，gradle里面的配置会覆盖 mk 中设置的。
 
 ```java
@@ -362,7 +361,7 @@ You can try to use some workarounds from the discussion I mentioned, specificall
 
 解决方案也大概如文中所说的，也进行了多次尝试：
 
-__主工程依赖方式需要改：__
+#### __主工程依赖方式需要改：__
 
 通常是这样引用libraray module
 > compile project(':AppLibrary')
@@ -371,7 +370,7 @@ __主工程依赖方式需要改：__
 > debugCompile project(path: ':AppLibrary', configuration: 'debug')
 releaseCompile project(path: ':AppLibrary', configuration: 'release')
 
-__再看看library modlue的gradle配置：__
+### __再看看library modlue的gradle配置：__
 
 * 首先 `buildTypes` 增加 `debug` 和 `release` 配置块
 * 在 `android` 块里面增加 `publishNonDefault true`
@@ -388,7 +387,7 @@ __再看看library modlue的gradle配置：__
 在开发过程中，遇到了一些比较蛋疼的问题，给大家说说，避免踩坑。  
 
 
-#### 1、生成 .h 头文件
+#### 生成 .h 头文件
 如果native方法中引用了android的类，例如Context之类的，需要显示指定--classpath
 参考链接：[android - javah doesn't find my class](http://stackoverflow.com/questions/7635624/android-javah-doesnt-find-my-class)
 
@@ -397,7 +396,7 @@ If you are on Linux or MAC-OS, use ":" to separate the directories for classpath
 > javah -cp /Users/Android/android-sdk/platforms/android-xy/android.jar:. com.test.JniTest
 <br>
 
-#### 2、JNI so库未找到方法实现
+#### JNI so库未找到方法实现
 
 __如果实现是C++（后续是cpp），没有头文件(.h)的话__，需要在接口实现处添加上  `extern "C"`，简单地说，C++的实现需要向前兼容C的实现，关于 extern "C"的作用，这里不多讲，
 可以参考：[extern "C"用法解析](http://www.jianshu.com/p/5d2eeeb93590)
@@ -409,7 +408,6 @@ Java_com_xxxx_android_AppRuntime_checkSignature(
 
 ### 总结
 
-
 1、上述的东西，可以再进一步封装，独立成为一个libaray module，提供一个sdk，输出的就是aar，Java层面上就是一个NativeContext类，这个类的`setAppContext()`接口必须由业务方来调用。
 
 2、上述提到的 so 最大的一个好处是自己具备识别签名的能力，只能在我们自己的app里面使用，别人是无法用的
@@ -417,3 +415,4 @@ Java_com_xxxx_android_AppRuntime_checkSignature(
 3、由于ndk开发经验不多，这个东西花了我两天时间学习和研究，幸好之前做过两年多的C++开发，对C++这方面还比较熟，所以慢慢也上手了，更多是一个熟悉的过程。所以，总结到这里，以备随时翻阅~~
 
 各位看官，有好的建议，欢迎留言，写了这么多，点个赞呗~~~
+<br>
