@@ -378,7 +378,7 @@ __再看看library modlue的gradle配置：__
 
 这样改后，我们编译后就可以发现生成的文件中会有debug和release两个文件夹了，如下图所示：
 
-![library_module_build](http://img2.tbcdn.cn/L1/461/1/3d950c0b2bd242a54ffc4249ae3789495e47bc20)
+![library_module_build](/img/2016/2016-08-08-android-so-signature-check-01.png)
 
 ### JNI开发的一些tips
 
