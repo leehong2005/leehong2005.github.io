@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Android so库防客户端破解的解决方案"
-subtitle:   "Keep fighting!"
+subtitle:   " \"Keep fighting!\" "
 date:       2016-08-08 12:00:00
 author:     "leehong"
 header-img: "img/post-bg-android.jpg"
