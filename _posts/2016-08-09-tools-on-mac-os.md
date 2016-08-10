@@ -31,6 +31,28 @@ brew install svn
 brew uninstall svn
 ```
 
+---
+
+
+## Go2Shell
+
+想想这些场景：
+
+* 有时我们要在 terminal 中进入某个路径很长的文件夹下，要一层一层地通过命令来打，这得输多少个 cd 命令呀，效率比较慢。
+* 要知道 Finder 中的一个文件夹的路径是什么？mac上还没啥好办法？至少我现在不知道～～
+
+发现了一个比较好的工具 `Go2Shell` ，从 AppStore 上就可以下载安装。它可以配合 Finder 一起来使用。
+
+__在 Finder 中打 Application 文件夹，按住 command 键，拖动 Go2Shell 的图标到 Finder 菜单就可以在 Finder 快捷打开Go2Shell了。__
+
+![](/img/2016/2016-08-09-tools-on-mac-os-go2shell-use.png)
+
+* __在 Finder 中点击这个图标，就可以直接打开 terminal 并且定位到当前目录 —— 场景一就解决了，哈哈！！__
+* __打开 terminal 后，直接输入 `pwd` ，就可以得到当前的路径了 —— 场景二就解决了，哈哈！！__
+
+
+---
+
 ## ag
 
 `ag` 命令是从当前路径下的文件中查找指定的字符串，简单的说就是内容查找。通常在工程中看到某个字符串（类名，变量等字符串）是否在别的有使用，直接使用这个命令能非常快速的得到结果。
@@ -48,10 +70,65 @@ brew uninstall svn
 例如我要在某个路径下面查找字符串 *WebView*，直接这样： `ag 'WebView'`，检查结果如下图所示：
 ![搜索结果图](/img/2016/2016-08-09-tools-on-mac-os-ag-use.png)
 
+---
 
 ## zsh
 
+![](/img/2016/2016-08-09-tools-on-mac-os-zsh.png)
+<br>
+
+__官方网站：[点这里](http://ohmyz.sh/)__
+
+zsh的安装：
+
+```shel
+$ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
+
+Shell是Linux/Unix的一个外壳，你理解成衣服也行。它负责外界与Linux内核的交互，接收用户或其他应用程序的命令，然后把这些命令转化成内核能理解的语言，传给内核，内核是真正干活的，干完之后再把结果返回用户或应用程序。
+
+Linux/Unix提供了很多种Shell，为毛要这么多Shell？难道用来炒着吃么？那我问你，你同类型的衣服怎么有那么多件？花色，质地还不一样。写程序比买衣服复杂多了，而且程序员往往负责把复杂的事情搞简单，简单的事情搞复杂。牛程序员看到不爽的Shell，就会自己重新写一套，慢慢形成了一些标准，常用的Shell有这么几种，sh、bash、csh等，想知道你的系统有几种shell，可以通过以下命令查看：
+
+```java
+cat /etc/shells
+```
+
+显示如下：
+
+```java
+/bin/bash
+/bin/csh
+/bin/ksh
+/bin/sh
+/bin/tcsh
+/bin/zsh
+```
+
+这就是当前系统支持的 shell 系统。
+
+通过下面命令可以切换 shell 系统：
+
+```java
+/usr/bin/chsh -s /bin/bash  // 让终端重置为bash
+/usr/bin/chsh -s /bin/zsh   // 让终端重置为zsh
+```
+
+在 `.zshrc` 中添加：
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.bash_profile
+
+> 注意：  
+有时可能会遇到这样的问题： 
+例如我要通过 git 添加文件，这样用 `git add *.java`，这样可能会出现 __zsh:no matches found: *.java__ 之类的错误，需要这样解决：__在.zshrc中添加setopt no_nomatch__，原因是这个命令如果在zsh中的话，zsh会优先去角析 * ，而不会把这个命令交到 git add 去处理。
+
+参考链接：[点我](http://glanwang.com/2016/05/31/Mac/zsh%E4%B8%8D%E5%85%BC%E5%AE%B9%E7%9A%84%E5%9D%91/)
+
+---
+
 ## fzf
+
+
+---
 
 ## tree
 
@@ -59,20 +136,24 @@ brew uninstall svn
 可以检查帮助来了解详细的使用方法，一般常用的：`tree -L 2` ，表示最大显示两层，运行结果如下：
 ![结果图](/img/2016/2016-08-09-tools-on-mac-os-tree-use.png)
 
-## Go2Shell
+---
 
-想想这些场景：
+## cloc
 
-* 有时我们要在 terminal 中进入某个路径很长的文件夹下，要一层一层地通过命令来打，这得输多少个 cd 命令呀，效率比较慢。
-* 要知道 Finder 中的一个文件夹的路径是什么？mac上还没啥好办法？至少我现在不知道～～
+> 统计代码行数的利器
 
-发现了一个比较好的工具 `Go2Shell` ，从 AppStore 上就可以下载安装。它可以配合 Finder 一起来使用。
-在 Finder 中打 Application 文件夹，按住 command 键，拖动 Go2Shell 的图标到 Finder 菜单就可以在 Finder 快捷打开Go2Shell了。
+安装： __brew install cloc__  
+用法： __cloc .__
 
-![](/img/2016/2016-08-09-tools-on-mac-os-go2shell-use.png)
+![](/img/2016/2016-08-09-tools-on-mac-os-cloc.png)
 
-在 Finder 中点击这个图标，就可以直接打开 terminal 并且定位到当前目录 —— 场景一就解决了，哈哈！！  
-打开 terminal 后，直接输入 `pwd` ，就可以得到当前的路径了 —— 场景二就解决了，哈哈！！
+___
+
+## 未完待续
+
+> 其他的一些有用的命令后面再慢慢总结，敬请期待！
+
+
 
 
 
