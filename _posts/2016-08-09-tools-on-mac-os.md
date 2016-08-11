@@ -75,7 +75,6 @@ __在 Finder 中打 Application 文件夹，按住 command 键，拖动 Go2Shell
 ## zsh
 
 ![](/img/2016/2016-08-09-tools-on-mac-os-zsh.png)
-<br>
 
 __官方网站：[点这里](http://ohmyz.sh/)__
 
@@ -113,8 +112,8 @@ cat /etc/shells
 /usr/bin/chsh -s /bin/zsh   // 让终端重置为zsh
 ```
 
-在 `.zshrc` 中添加：
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+在 `.zshrc` 中添加：  
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  
 [ -f ~/.fzf.zsh ] && source ~/.bash_profile
 
 > 注意：  
@@ -126,6 +125,9 @@ cat /etc/shells
 ---
 
 ## fzf
+
+TBD
+
 
 
 ---
