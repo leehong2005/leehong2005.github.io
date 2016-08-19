@@ -12,14 +12,13 @@ tags:
     - 内在泄漏
 ---
 
-
-## 背景
-
-
-> * 问题分析
+> * 背景
+* 问题分析
 * 解决方案
 * Android 5.1之前的代码
 * 结束语
+
+## 背景
 
 __参考文章：__ [零号路杂货铺 - Android 5.1 Webview 内存泄漏新场景](http://linghaolu.github.io/webview/memory/leak/2015/07/16/android-5.1-webview-memory-leak.html) ， 我也是在这个基础之上进行一些学习，感谢～～
 
