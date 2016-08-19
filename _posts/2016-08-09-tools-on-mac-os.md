@@ -151,6 +151,61 @@ TBD
 
 ___
 
+
+## findreplace.sh
+
+> __这个脚本的功能在指定的文件夹下，从文件中查找指定字符串，替换成目标字符串。__ 
+
+有的时候我们需要对某些文件中的文本进行全局替换，这个脚本是基于 `sed` 命令来实现，也是从网上参考了很多。
+
+#### 参考链接
+
+* [Recursive search and replace in text files on Mac and Linux](http://stackoverflow.com/questions/9704020/recursive-search-and-replace-in-text-files-on-mac-and-linux)
+
+* [https://gist.github.com/nateflink/9056302](https://gist.github.com/nateflink/9056302)
+
+#### 实现如下
+
+```
+#!/bin/bash
+#By Nate Flink
+
+#Invoke on the terminal like this
+#curl -s https://gist.github.com/nateflink/9056302/raw/findreplaceosx.sh | bash -s "find-a-url.com" "replace-a-url.com"
+ 
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: ./$0 [find string] [replace string]"
+  #exit 1
+fi
+ 
+FIND=$1
+REPLACE=$2
+
+#needed for byte sequence error in ascii to utf conversion on OSX
+export LC_CTYPE=C;
+export LANG=C;
+ 
+#sed -i "" is needed by the osx version of sed (instead of sed -i)
+find . -type f -exec sed -i "" "s/${FIND}/${REPLACE}/g" {} +
+#exit 0
+```
+
+
+#### 用法
+
+上面的代码保存到 `findreplace.sh` 文件中，然后把它放到 `/usr/local/bin/` 目录下面，可以全局访问，放好后，在终端中输入 `which findreplace.sh` ，如果没有问题，会有输出 `/usr/local/bin/findreplace.sh`。
+
+用的时候就这样，在终端中输入：
+
+```
+. findreplace "source" "target"
+```
+
+
+
+---
+
+
 ## 未完待续
 
 > 其他的一些有用的命令后面再慢慢总结，敬请期待！
