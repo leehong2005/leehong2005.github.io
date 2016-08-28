@@ -9,7 +9,7 @@ catalog: true
 tags:
     - Android
     - WebView
-    - 内在泄漏
+    - 内存泄漏
 ---
 
 > * 背景
