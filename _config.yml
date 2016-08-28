@@ -53,13 +53,13 @@ kramdown:
 
 # Sidebar settings
 sidebar: false                           # whether or not using Sidebar.
-sidebar-about-description: "这里添加自己的描述"
+sidebar-about-description: "不断学习，不断总结，不断提升，世界那么大，我想去看看。"
 sidebar-avatar: /img/avatar-lih.png      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
 # Featured Tags
-featured-tags: false                     # whether or not using Feature-Tags
+featured-tags: true                     # whether or not using Feature-Tags
 featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
 
 
