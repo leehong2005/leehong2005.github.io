@@ -4,7 +4,7 @@ title:      "Android 5.1 WebView内存泄漏分析"
 subtitle:   " \"Comedy is acting out optimism.\" "
 date:       2016-08-19 00:00:00
 author:     "leehong"
-header-img: "img/post-bg-alibaba.jpg"
+header-img: "img/post-bg-unix-linux.jpg"
 catalog: true
 tags:
     - Android
