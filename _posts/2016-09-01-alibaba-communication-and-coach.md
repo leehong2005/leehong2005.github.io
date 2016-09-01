@@ -1,8 +1,8 @@
 ---
 layout:     post
 title:      "侠客行之沟通与辅导"
-subtitle:   " \"A friend without faults will never be found.\" "
-date:       2016-08-31 00:00:00
+subtitle:   " \"Everything is going on, but don't give up trying.\" "
+date:       2016-09-01 00:00:00
 author:     "leehong"
 header-img: "img/post-bg-alibaba.jpg"
 catalog: true
