@@ -1,0 +1,30 @@
+<html>  
+<head>  
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+<title>Insert title here</title>  
+<script type="text/javascript">
+function test2(){
+    var di = document.getElementById("di");
+    di.innerHTML = "app have not installed";
+}
+function newOpen(){//184 064 323 438
+    var di = document.getElementById("di");
+    di.innerHTML = "app have installed";
+    var ifc = document.getElementById("ifc");
+    ifc.innerHTML = "<iframe src='mm://xxxxx?a=b&c=d' onload='test2()'></iframe>";
+    return false;
+}
+</script>
+</head>  
+<body>  
+ <!-- <a href="#" onclick="return newOpen()">local3</a><br/>  -->
+
+<div>
+	 <a href="intent://scan/#Intent;scheme=tbreader;package=com.tbreader.android;S.browser_fallback_url=http%3A%2F%2Fzxing.org;end">打开淘宝阅读</a>
+</div>
+
+
+<div id="di"></div> 
+ <div style="display:none;" id="ifc"></div>
+</body>  
+</html>
