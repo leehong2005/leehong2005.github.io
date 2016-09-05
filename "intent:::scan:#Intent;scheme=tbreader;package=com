@@ -1,0 +1,8 @@
+"intent://scan/#Intent;scheme=tbreader;package=com.tbreader.android;S.browser_fallback_url=http%3A%2F%2Fzxing.org;end"
+
+
+
+intent://open/#Intent;scheme=tbreader;package=com.tbreader.android;end
+
+
+intent://open/#Intent;scheme=tbreader;package=com.tbreader.android;launchFlags=0x10000000;end
