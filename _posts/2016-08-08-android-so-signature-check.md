@@ -353,7 +353,10 @@ __为什么需要debug模式的library呢？因为我是想主工程打debug模�
 
 那么到底要如何才能打出debug的aar呢？为了实现这个功能，再真费了点劲。直接上结论！
 
-参考文档：[Gradle插件不能编译出library模块的DEBUG模式](http://stackoverflow.com/questions/28081846/use-different-build-types-of-library-module-in-android-app-module-in-android-stu)
+参考文档：
+
+1. [Gradle插件不能编译出library模块的DEBUG模式](http://stackoverflow.com/questions/28081846/use-different-build-types-of-library-module-in-android-app-module-in-android-stu)
+2. [Create an Android Library](https://developer.android.com/studio/projects/android-library.html#CreateLibrary)
 
 文中也有人说到了不能打debug模式的包：
 > Well, Gradle Android plugin simply can't build the debug version of dependent library modules. This is a well-known, old issue and this is not resolved yet.
