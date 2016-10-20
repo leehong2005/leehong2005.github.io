@@ -206,6 +206,24 @@ find . -type f -exec sed -i "" "s/${FIND}/${REPLACE}/g" {} +
 ---
 
 
+## subl
+
+`subl` 是 「Sublime Text」的一个快捷命令，我们可以创建一个软链接，经常在 terminal 中查找到文件时，直接使用 subl 命令就可以将文件打开查看，比较方便。如何添加这个命令，可以查看官方的文档：
+
+[https://www.sublimetext.com/docs/3/osx_command_line.html](https://www.sublimetext.com/docs/3/osx_command_line.html)
+
+```
+ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/subl
+```
+
+我们可以在这里查看到真实的subl路径：
+
+1、在「应用程序」中找到Sublime Text  
+2、右键「显示包内容」  
+3、Contents->SharedSupport->bin->subl
+
+可以使用 `subl --help` 来查看帮助。
+
 ## 未完待续
 
 > 其他的一些有用的命令后面再慢慢总结，敬请期待！
