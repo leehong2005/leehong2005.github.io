@@ -213,7 +213,7 @@ find . -type f -exec sed -i "" "s/${FIND}/${REPLACE}/g" {} +
 [https://www.sublimetext.com/docs/3/osx_command_line.html](https://www.sublimetext.com/docs/3/osx_command_line.html)
 
 ```
-ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/subl
+ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
 ```
 
 我们可以在这里查看到真实的subl路径：
