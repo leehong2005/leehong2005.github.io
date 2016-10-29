@@ -125,7 +125,7 @@ SlideFrameLayout：1
 
 *图三：`SlideFrameLayout` 与 `PreviewView` 的Z轴关系*
 
-#### 如何显示前一个页面？
+#### 显示前一个页面
 
 为了显示前一个 activity 的内容，这里可能有几种方法：
 
