@@ -43,7 +43,7 @@ tags:
 
 以下是效果图
 
-![](/img/2016/2016-10-29-slideback-img1.gif)
+![](/img/2016/2016-10-29-slideback-img1.png)
 
 *图一：运行效果截图*
 
