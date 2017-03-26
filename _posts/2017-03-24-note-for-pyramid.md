@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "读书笔记之《金字塔原理》"
+title:      "读书笔记之 ——《金字塔原理》"
 subtitle:   " \"Deliver not your words by number but by weight.\" "
 date:       2017-03-24 12:00:00
 author:     "leehong"
