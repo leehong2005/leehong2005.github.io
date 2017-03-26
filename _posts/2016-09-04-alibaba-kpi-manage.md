@@ -8,7 +8,6 @@ header-img: "img/post-bg-alibaba.jpg"
 catalog: true
 tags:
     - 管理
-    - 绩效
 ---
 
 这是在阿里巴巴内部侠客行培训的核心要点和心得体会。
