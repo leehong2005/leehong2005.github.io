@@ -2,7 +2,7 @@
 layout:     post
 title:      "读书笔记之 ——《历史深处的民国》"
 subtitle:   " \"Life is the art of drawing without an eraser.\" "
-date:       2017- 04-07 12:00:00
+date:       2017- 04-08 12:00:00
 author:     "leehong"
 header-img: "img/post-bg-bas-rider-banner.jpg"
 catalog: true
