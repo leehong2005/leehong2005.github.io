@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "读书笔记之 ——《生活中的心理学》"
-subtitle:   " \"Life is the art of drawing without an eraser.\" "
+subtitle:   " \"Every man is a poet when he is in love.\" "
 date:       2017-04-08 12:00:00
 author:     "leehong"
 header-img: "img/post-bg-psychology.jpg"
@@ -12,8 +12,6 @@ tags:
 
 ###《生活中的心理学》读书笔记
 
-
----
 
 ### 第三章 学习与记忆
 
