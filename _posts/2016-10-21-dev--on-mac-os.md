@@ -62,7 +62,7 @@ alias jdk8="export JAVA_HOME=$JAVA_8_HOME"
 > 说明一下：`JAVA_HOME` 最好不要直接把JDK的路径写死了，硬编码容易造成以后的维护不方便。
 
 
-## 查看代码行数
+## 代码统计工具
 
 使用这个命令 **`cloc`**
 
@@ -71,9 +71,40 @@ alias jdk8="export JAVA_HOME=$JAVA_8_HOME"
 安装： __brew install cloc__  
 用法： __cloc .__
 
+官方文档：[http://cloc.sourceforge.net/](http://cloc.sourceforge.net/)
+
 ![](/img/2016/2016-08-09-tools-on-mac-os-cloc.png)
 
-## Gradle使用
+## APK签名
+
+#### 查看keystore信息
+
+使用 `keytool` 命令，详细的可以看 #keytool --help
+
+keytool -list -v -keystore [签名文件] -storepass [密码]
+keytool -list -rfc -keystore [签名文件> -storepass [密码]
+
+见下图：
+
+![](/img/2017/2017-05-10-keystore-info.png)
+
+
+#### apktool
+
+* sudo apktool d [apk文件] —— 得到一个文件夹，以apk名称命名
+* sudo apktool b [apk名字] —— 进入文件夹中的dist目录，可以看到一个apk，这个apk文件的签名已经被去掉了
+
+#### jarsigner
+
+* arsigner -verbose -keystore [签名文件keystore] -signedjar [生成的签名文件] [未签名的文件] [keystore的别名]
+
+```java
+jarsigner -verbose -keystore demo.keystore -signedjar app-signed.apk app-unsigned.apk demo
+```
+
+说明：
+
+-signedjar：它有三个参数，一个是输出的apk，一个是未签名的apk，一个是签名文件keystore的**别名**。
 
 ## 未完待续
 
