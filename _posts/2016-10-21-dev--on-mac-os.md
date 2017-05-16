@@ -106,6 +106,29 @@ jarsigner -verbose -keystore demo.keystore -signedjar app-signed.apk app-unsigne
 
 -signedjar：它有三个参数，一个是输出的apk，一个是未签名的apk，一个是签名文件keystore的**别名**。
 
+## Gradle
+
+使用 gradle 在编译时动态设置 Android BuildConfig。
+
+**配置字符串类型，如下：**
+
+参考：[http://qiita.com/shts/items/d94834437b22712415c5](http://qiita.com/shts/items/d94834437b22712415c5)
+
+```
+gradle.properties
+parseApiId=xxxxxxxxxxxxxxxxxxxxx
+parseApiKey=xxxxxxxxxxxxxxxxxxxxx
+```
+
+```
+buildConfigField "String", "PARSE_API_ID", "\"${project.property("parseApiId")}\""
+buildConfigField "String", "PARSE_API_KEY", "\"${project.property("parseApiKey")}\""
+```
+
+**配置int类型，如下**
+
+buildConfigField "int", "PARSE_API_ID", PARSE_API_ID
+
 ## 未完待续
 
 > 其他的一些有用的命令后面再慢慢总结，敬请期待！
