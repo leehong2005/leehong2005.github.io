@@ -224,6 +224,26 @@ ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/loca
 
 可以使用 `subl --help` 来查看帮助。
 
+## SDKMAN
+
+[http://sdkman.io/](http://sdkman.io/)
+
+SDKMAN! is a tool for managing parallel versions of multiple Software Development Kits on most Unix based systems. It provides a convenient Command Line Interface (CLI) and API for installing, switching, removing and listing Candidates. Formerly known as GVM the Groovy enVironment Manager, it was inspired by the very useful RVM and rbenv tools, used at large by the Ruby community.
+
+用这个工具可以来安装一系列的 SDK，例如 Java，Gradle，Groovy 等。
+
+例如，如果要安装 gradle，则
+
+```java
+sdk install gradle
+```
+
+使用很方便，而且可以方便 unisntall，设置默认版本等。具体的使用方法，参考官方文档即可。
+
+### 如何安装？
+
+[http://sdkman.io/install.html](http://sdkman.io/install.html)
+
 ## 未完待续
 
 > 其他的一些有用的命令后面再慢慢总结，敬请期待！
