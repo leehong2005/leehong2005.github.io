@@ -107,25 +107,37 @@ tags:
 
 由于动画通过文件来描述，替换不同的文件，将会得到不同的动画效果，动效的更新或升级，将非常灵活。
 
-##### c) 从网络加载
+##### c) 文件来源多样性
 
-既然是加载动画描述文件，那么这个文件就可以从任意地方来，assets、sdcard、network都是可以的。从网络加载动画描述文件，将能做到不发版的情况下，动态更新动效。
+既然是加载动画描述文件，那么这个文件就可以从任意地方来，assets、sdcard、network都是可以的。从网络加载动画描述文件，将能做到不发版的情况下，动态更新动效。可以从网络下载动画文件，从而可以快速做A/B test。
 
-##### d) 多平台支持
+##### d) 跨平台
 
-动画文件可以应用于 Android 和 iOS 平台，这样设计师只需出一份动效设计稿就行，不用区分平台。
+动画文件可以应用于 Android、iOS、React Native，这样设计师只需出一份动效设计稿就行，不用区分平台。
 
 **不同的动画效果，只需要做一次开发即可**
 
 ### 四. Lottie实现原理
 
-* 框架图
+##### 1. 开发流程图
 
-![](/img/2017/2017-06-30-lottie-07.png)
+![](/img/2017/2017-06-30-lottie-08.png)
 
-* 实现原理
+##### 2. 实现原理
 
 Lottie使用json文件来作为动画数据源，json文件是通过Bodymovin插件导出的，查看sample中给出的json文件，其实就是把图片中的元素进行来拆分，并且描述每个元素的动画执行路径和执行时间。Lottie的功能就是读取这些数据，然后绘制到屏幕上。
+
+Lottie 提供了一个 LottieAnimationView 给用户使用，而实际 Lottie 的核心是 LottieDrawable，它承载了所有的绘制工作，LottieAnimationView则是对LottieDrawable 的封装，再附加了一些例如 解析 的功能。
+
+LottieComposition 是 对应的 Model，承载 的所有信息。
+CompositionLayer 是 layer 的集合。
+ImageAssetBitmapManager 负责管理动画所需的图片资源。
+
+它们的关系：
+
+![](/img/2017/2017-06-30-lottie-09.jpg)
+
+##### 3. 数据解析
 
 首先要解析json，建立数据到对象的映射，然后根据数据对象创建合适的Drawable绘制到view上，动画的实现可以通过操作读取到的元素完成。
 
@@ -133,17 +145,17 @@ Lottie使用json文件来作为动画数据源，json文件是通过Bodymovin插
 
 >json文件 ——> Componsition ——> Drawable ——> View
 
-通过如下3个核心类来来完成整个工作流程，因而使用起来比较简单。
+通过如下3个核心类来来完成整个工作流程，因而使用起来比较简单。以下是三个比较核心的类的说明：
 
-**LottieComposition (json->数据对象)**
+* **LottieComposition (json->数据对象)**
 	
 Lottie使用LottieComposition来作为After Effects的数据对象，即把Json文件映射为到LottieComposition，该类中提供了解析json的静态方法。
 
-**LottieDrawable (数据对象->Drawable)**
+* **LottieDrawable (数据对象->Drawable)**
 
 这个类是最上层使用的重要的一个类，动画的绘制就是由这个类来实现。
 
-**LottieAnimationView（绘制）**
+* **LottieAnimationView（绘制）**
 
 操作集合，LottieAnimationView 继承自 AppCompatImageView，封装了一些动画的操作，具体的绘制时委托为 LottieDrawable 完成的。
 
@@ -177,13 +189,204 @@ Lottie使用LottieComposition来作为After Effects的数据对象，即把Json�
 
 还有 `parseImages`、`parsePrecomps`、 `parseLayers` 这几个方法。
 
+##### 4. JSON文件的属性含义
+
+动画描述文件是通过 `bodymovin` 插件导出来的，里面包含了动画的一切信息，包括了帧率，动画形态，如何做动画等。接下来将简单说明一下动画描述文件中的主要属性。
+
+**最外部结构：**
+
+```json
+{
+  "v": "4.6.2",
+  "fr": 25,
+  "ip": 0,
+  "op": 1000,
+  "w": 720,
+  "h": 800,
+  "nm": "合成 1",
+  "ddd": 0,
+  "assets":[],
+  "layers":[]
+}
+```
+
+属性的含义：
+
+|属性		| 含义|
+| --- |:---:|
+|v			|bodymovin的版本|
+|fr			|帧率|
+|ip			|起始关键帧|
+|op			|结束关键帧|
+|w			|动画宽度|
+|h			|动画高度|
+|assets	|动画图片资源信息|
+|layers|	动画图层信息|
+
+从这里可以获取 设计的动画的宽高，帧相关的信息，动画所需要的图片资源的信息以及图层信息。
+
+**assets**
+
+图片资源信息, 相关类 LottieImageAsset、 ImageAssetBitmapManager。
+
+```json
+"assets": [
+    {
+      "id": "image_0",
+      "w": 58,
+      "h": 31,
+      "u": "images/",
+      "p": "img_0.png"
+    }
+}
+```
+
+属性的含义：
+
+|属性		| 含义		|
+| --- |:---:|
+|id			|图片id		|
+|w			|图片宽度	|
+|h			|图片高度	|
+|p			|图片名称	|
+
+
+**layers**
+
+图层信息，相关类：Layer、BaseLayer以及 BaseLayer 的实现类。
+
+```json
+{
+    "ddd": 0,
+    "ind": 0,
+    "ty": 2,
+    "nm": "btnSlice.png",
+    "cl": "png",
+    "refId": "image_0",
+    "ks": {....},
+    "ao": 0,
+    "ip": 0,
+    "op": 90.0000036657751,
+    "st": 0,
+    "bm": 0,
+    "sr": 1
+}
+```
+
+|属性	| 含义	|
+| --- |:---:|
+|nm		|layerName 图层信息|
+|refId	|引用的资源 id,如果是 ImageLayer 那么就是图片的id|
+|ty		|layertype 图层类型|
+|ip		|inFrame 该图层起始关键帧|
+|op		|outFrame 该图层结束关键帧|
+|st		|startFrame 开始|
+|ind	|layer id 图层 id|
+
+Layer 可以理解为图层，跟 PS 等工具的概念相同，每个 Layer 负责绘制自己的内容。
+
+在 Lottie 里拥有不同的 Layer，目前有 PreComp,Solid,Image,Null,Shape,Text ，各个 Layer 拥有的属性各不相同，这里只指出共有的属性。
+
+下图为 Layer 相关类图：
+
+![](/img/2017/2017-06-30-lottie-10.jpg)
+
+##### 5. 动画如何动起来的？
+
+还有一个问题，动画是如何动起来的呢？这里用到了属性动画来产生一个0～1的插值，根据不同的插值来播放不同帧的动画，说白了，就是调用 `setProgress(float)` 来做动画。代码如下：
+
+```java
+private final ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+
+public LottieDrawable() {
+    animator.setRepeatCount(0);
+    animator.setInterpolator(new LinearInterpolator());
+    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override public void onAnimationUpdate(ValueAnimator animation) {
+        if (systemAnimationsAreDisabled) {
+          animator.cancel();
+          setProgress(1f);
+        } else {
+          setProgress((float) animation.getAnimatedValue());
+        }
+      }
+    });
+  }
+```
+
+##### 6. lottie适配原理
+
+内部适配逻辑如下：
+
+```java
+static LottieComposition fromJsonSync(Resources res, JSONObject json) {
+      Rect bounds = null;
+      float scale = res.getDisplayMetrics().density;
+      int width = json.optInt("w", -1);
+      int height = json.optInt("h", -1);
+
+      if (width != -1 && height != -1) {
+        int scaledWidth = (int) (width * scale);
+        int scaledHeight = (int) (height * scale);
+        bounds = new Rect(0, 0, scaledWidth, scaledHeight);
+      }
+      ...
+}
+```
+
+LottieAnimationView#setComposition:
+
+
+```java
+public void setComposition(@NonNull LottieComposition composition) {
+    if (L.DBG) {
+      Log.v(TAG, "Set Composition \n" + composition);
+    }
+    lottieDrawable.setCallback(this);
+
+    boolean isNewComposition = lottieDrawable.setComposition(composition);
+    if (!isNewComposition) {
+      // We can avoid re-setting the drawable, and invalidating the view, since the composition
+      // hasn't changed.
+      return;
+    }
+
+    int screenWidth = Utils.getScreenWidth(getContext());
+    int screenHeight = Utils.getScreenHeight(getContext());
+    int compWidth = composition.getBounds().width();
+    int compHeight = composition.getBounds().height();
+    if (compWidth > screenWidth ||
+        compHeight > screenHeight) {
+      float xScale = screenWidth / (float) compWidth;
+      float yScale = screenHeight / (float) compHeight;
+
+      float maxScaleForScreen = Math.min(xScale, yScale);
+      setScale(Math.min(maxScaleForScreen, lottieDrawable.getScale()));
+
+      Log.w(L.TAG, String.format(
+          "Composition larger than the screen %dx%d vs %dx%d. Scaling down.",
+          compWidth, compHeight, screenWidth, screenHeight));
+    }
+
+	...
+  }
+```
+
+##### 7. 播放动画时序图
+
+播放动画的时序图如下所示：
+
+![](/img/2017/2017-06-30-lottie-11.jpg)
+
+其中 `BaseKeyframeAnimation` 类是比较核心的，它根据当前的 progress，来计算所需要的值。 关于 `BaseKeyframeAnimation` 的继承关系图如下：
+
+![](/img/2017/2017-06-30-lottie-12.jpg)
 
 ### 五. lottie vs keyframes
 
 `lottie`由 Airbnb 出品，而`keyframes`由 facebook 出品，这两个库实现效果都差不多。据 lottie 官网说功能比 keyframes 强大一些。感兴趣的看官可以去深入研究一下。
 
 关于 keyframes 的介绍，请参考：
-
 [https://facebookincubator.github.io/Keyframes/](https://facebookincubator.github.io/Keyframes/)
 
 ### 六. 后续思考
@@ -199,3 +402,12 @@ App的用户引导完成可以用 lottie 来实现，界面的图形可以跟随
 ##### 3. 更多动效成为可能
 
 基于这样的动画框架，App中可以实现更多更丰富的动画效果，这将会大大提升用户体验。
+
+### 七. 参考资料
+
+* [lottie-android](https://github.com/airbnb/lottie-android)
+* [introducing-lottie](https://medium.com/airbnb-engineering/introducing-lottie-4ff4a0afac0e)
+* [design lottie](https://airbnb.design/lottie/)
+* [bodymovin](https://github.com/bodymovin/bodymovin)
+* [Animation: Jump-through](https://medium.com/google-developers/animation-jump-through-861f4f5b3de4)
+* [keyframes overview](https://facebookincubator.github.io/Keyframes/docs/keyframes/overview)
