@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Lottie动画库研究"
+title:      "Android Lottie动画库研究"
 subtitle:   " \"Discontent is the first step in progress.\" "
 date:       2017-06-30 12:00:00
 author:     "leehong"
