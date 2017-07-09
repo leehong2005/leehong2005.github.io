@@ -12,177 +12,74 @@ tags:
 ---
 
 
-[SlideBack](https://github.com/leehong2005/SlideBack) 项目实现了类似 `iOS` 左侧滑动返回交互的功能，`Android` 平台做得最早的应该是微信，即使到了现在，有滑动返回功能的App也不是很多，就算有，做得极致的也比较少。
+ScrollToTop项目实现一个通用的控制页面滚回到顶部的功能，ios系统中有这个自带功能，android中实现的很少。基于这个想法，开发了这个项目。使用者可以方便的实现全局的滚回顶部控制。
 
-滑动返回功能目前我已经使用在自己的项目中了，也发现了不少问题，现在坑基本都填平了，一直就想放到 GitHub 上面来，迟迟等到今天是因为我认为始终还没达到一个完美的状态。该功能的实现最开始其实也从系统提供的组件中找到了一些灵感，典型的就是 `SlidePannel`，左侧菜单， Google 原生的 Android 应用基本都有这样的交互设计。站在前人的肩膀上，经过一番设计加工，也就有了现在的实现。
+### 1. 使用方式
 
-废话结束，干货开始！！
+支持了滚动到顶部的控件有：
 
----
+* ScrollToTopScrollView
+* ScrollToTopListView
+* ScrollToTopGridView
+* ScrollToTopWebView
+* ScrollToTopExpandableListView。
 
-设计这样的框架，我觉得最重要的几个点：
+**xml中使用**
 
-* 高质量，坑少：应该是充分测试或线上应用验证过，而且需要考虑到方方面面
-* 轻量、低入侵：如果集成该框架，必须对现在项目的代码改动很少，想去掉的话，以非常低的代价就可以集成或去掉，简单来说就是插拔方便
-* 高性能：内存占用、不卡顿
-
-**可以参考如下几个项目，其中 `oubowu/SlideBack` 实现的效果不错。**
-
-* [oubowu/SlideBack](https://github.com/oubowu/SlideBack)
-* [r0adkll/Slidr](https://github.com/r0adkll/Slidr)
-* [XBeats/and_swipeback](https://github.com/XBeats/and_swipeback)
-
-## 功能
-
-* 设置滑动返回功能是否可用
-* 设置前一个界面是否跟随滑动而滑动
-* 设置阴影的图片
-* 设置左侧边缘响应的大小（其实一般都不会用到）
-
-**运行效果图**
-
-以下是效果图
-
-![](/img/2016/2016-10-29-slideback-img1.png)
-
-*图一：运行效果截图*
-
-
-## 使用说明
-
-#### 一般用法
-
-这个框架，对外暴露提供的API就一个类：**`SlideBackActivity `**。
-
-以下是使用方法，看好了
-
-例如我的应用中已经有自己的通用的 Activity 基类，名字就叫：`ActionBarActivity`，在这里的用法如下：
-
-```java
-public class ActionBarActivity extends SlideBackActivity {
-	...
-}
-
+```xml
+<com.aliwx.android.scroll.ui.ScrollToTopListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 ```
 
-**重点是：这里只需要把 `ActionBarActivity` 的基类改成 `SlideBackActivity` 即可。**
+**Java中使用**
 
-来看一下 sample 中的 `MainActivity` 的用法：
+ListView listView = new ScrollToTopListView(context);
+
+### 2. 使用场景
+
+* 页面的主体是ScrollView，ListView，GridView，WebView的需要使用这些控件，支持滚动到顶部。
+* 页面的其中一小部分是上述控件的不需要支持。
+* 对话框中不需要滚动到顶部，不使用这些控件。
+
+### 3. 实现方式
+
+SDK提供了两种方式滚动到顶部
+
+##### 1. 针对具体的可滚动View
+
+`ScrollToTopScrollView`，`ScrollToTopListView`，`ScrollToTopGridView`，`ScrollToTopWebView`，`ScrollToTopExpandableListView` 都实现了 `IScrollToTopInterface` 接口，这个接口的定义如下：
 
 ```java
-public class MainActivity extends ActionBarActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // 首页禁用滑动返回
-        setSlideable(false);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+public interface IScrollToTopInterface {
+    void scrollToTop();
+    boolean isScrollToTopEnabled();
+    void setScrollToTopEnabled(boolean var1);
 }
 ```
 
-这里调用了 `setSlideable(false);` 方法来禁用滑动返回，因为是首页嘛，不能滑动返回。
+如果想单独使用GridView/ListView/ScrollView等滚动到顶部，可以直接调用对应view的 scrollToTop() 方法。
 
-#### API说明
+##### 2. 针对整体Activity
 
-* **void setSlideable(boolean)** —— 设置滑动返回是否可用，`false`不可用，默认为`true`
-* **void setPreviousActivitySlideFollow(boolean)** —— 设置前一个activity的页面是否跟随滑动面一起滑动，`false`不滑动，默认为`true`
-* **void onSlideBack()** —— 滑动退出时调用的回调方法，派生类可以重写这个方法，例如可以做一些统计工作，统计关闭activity的方式，多少是滑动返回关闭的
-* **void setShadowResource(int)** —— 设置阴影的资源id，一般都是写一个shape drawable
-
->真正大家需要关心的也前这么几个，严格来说，一般都只关心前两个就足够了～～
-
-## 设计思考
-
-#### 框架层次结构
-
-一般就两种实现方式，各有优缺点吧：
-
-* 继承：应用方的 Activity 继承自框架的 Activity （例如：`SlideBackActivity`）
-* 非继承：应用方在 Activity#setContentView(view) 之后调用框架的类来 `attach` 。
-
-这里我选择的是 **第一种方案！**
-
-框架的实现思路是通过继承的方式来实现的，虽然可能会更改使用方式的继承关系，但考虑到一般情况下，应用层都会有自己的统一的 Activity 基类，例如 `BaseActivity`、`ActionBarActivity` 之类的，其实修改一下这个基类的父类，就可以了。
-
-使用了继承的设计，相当于在以前的继承关系中插入了一层，大概的类图如下所示：
-
-![](/img/2016/2016-10-29-slideback-img2.png)
-
-*图二：设计的框架结果，应用层的 Activity 继承自框架中的 `SlideBackActivity`*
-
-
-由于是使用继承的设计，子类设置的 content view，在 `SlideBackActivity` 中会把content view 添加到自己的一个叫 `SlideFrameLayout` 的容器中，它会处理各种事件。在这个容器中，还有一个用来显示前一个Activity内容的自定义视图，叫 `PreviewView`，它们的z-order是：
-
-PreviewView: 0  
-SlideFrameLayout：1
-
-也就是说，PreviewView 在最下面，SlideFrameLayout 在最上在，对用户可见，当用户开始滑动时，把上面的 SlideFrameLayout 进行偏移，那么自然就看到下在的 PreviewView 了。 如下图所示：
-
-![](/img/2016/2016-10-29-slideback-img3.png)
-
-*图三：`SlideFrameLayout` 与 `PreviewView` 的Z轴关系*
-
-#### 显示前一个页面
-
-为了显示前一个 activity 的内容，这里可能有几种方法：
-
-**1、创建bitmap：**常见的做法是把前一个 activity 的内容绘制到一个bitmap上面，然后对 bitmap 再进行绘制。这种方法有几个缺点：
-
-* 创建一个屏幕大小的 bitmap 特别耗内存、在创建 bitmap 的一瞬间，可能会卡顿
-* 何时将 activity 的内容绘制到bitmap上面？如果启动新页面时就绘制，则可能会把前一个界面的一些按下效果也绘制上了，这个时机不好把握
-* 不符合高效的原则
-
-**2、window设置为透明：**在 manifest 中把activity的背景设置为透明，这种方案问题更大了，试想一下，如果想在 JAVA 层通过开关来控制滑动返回是否开启，你想想会是什么效果？另外一个，把窗体设置为透明，可能会带来很多坑，机型适配，沉浸式都可能会有问题。这个不符合轻量，低入侵原则。
-
-**3、实时绘制：**把前一个 activity 的 content view （android.R.id.content）实时绘制到当前界面中。这种方法是最优的，不用创建bitmap，不用设置窗体背景。
-
-**我这个项目中就是使用的第三种方案**，自定义的View如下，很简单：
+sdk中提供了`ScrollToTopHelper`类，提供了两个滚动的方法：
 
 ```java
- private static class PreviewView extends View {
-        private View mHostView;
-
-        public PreviewView(Context context) {
-            super(context);
-        }
-
-        public void setHostView(View view) {
-            mHostView = view;
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            super.draw(canvas);
-            if (mHostView != null) {
-                mHostView.draw(canvas);
-            }
-        }
-
-        @Override
-        protected void onDetachedFromWindow() {
-            super.onDetachedFromWindow();
-            mHostView = null;
-        }
-    }
+public static View scrollToTop(final Activity activity)
+ public static View scrollToTop(final ViewGroup viewGroup)
 ```
 
-## 优点
+传递activity或者activity的根view，内部会找到实现了`IScrollToTopInterface`接口的第一个在屏幕上可见且可滚动view，并进行滚动。可以在activity的共同基类中点击titlebar调用此方法，就能实现全局的滚动到顶部。
 
-* 不用设置窗体的背景为透明
-* 不需要对前一个 activity 进行截图，内存占用少
-* 轻量、使用简单
+##### 3. 类图
 
-## 缺点
+![](/img/2017/2017-02-24-scroll-to-top-class.png)
 
-* 转屏可能会存在问题，不过中国特色移动互联网里面，一般能转屏的还真不多见，所以这个问题就不是特别突显
-* 修改了继承关系，如果应用层的 BaseActivity 是继承自 `FragmentActivity`，`AppCompatActivity` 的话，可能会有些问题，那么也必须把 `SlideBackActivity` 的基类也改成这些类
 
-## 小结
+源码地址：
 
-**尽管我努力去做到高质量，但仍然可能存在问题，如果你在使用过程中，发现了任何问题，或者用得不爽的，可以反馈给我，欢迎同仁一起探讨交流！**
+[https://github.com/lyzalyz/scrollToTop](https://github.com/lyzalyz/scrollToTop)
 
 请关注：
 
