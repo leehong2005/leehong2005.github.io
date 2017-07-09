@@ -79,7 +79,7 @@ public static View scrollToTop(final Activity activity)
 
 源码地址：
 
-[https://github.com/lyzalyz/scrollToTop](https://github.com/lyzalyz/scrollToTop)
+[https://github.com/leehong2005/ScrollToTop](https://github.com/leehong2005/ScrollToTop)
 
 请关注：
 
