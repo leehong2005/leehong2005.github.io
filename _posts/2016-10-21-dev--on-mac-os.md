@@ -2,7 +2,7 @@
 layout:     post
 title:      "Mac OS奇技淫巧之 —— 开发技巧使用心得"
 subtitle:   " \"Live as if you were to die tomorrow.\" "
-date:       2016-10-20 12:00:00
+date:       2016-10-21 12:00:00
 author:     "leehong"
 header-img: "img/post-bg-rwd.jpg"
 catalog: true
@@ -123,11 +123,23 @@ parseApiKey=xxxxxxxxxxxxxxxxxxxxx
 ```
 buildConfigField "String", "PARSE_API_ID", "\"${project.property("parseApiId")}\""
 buildConfigField "String", "PARSE_API_KEY", "\"${project.property("parseApiKey")}\""
+buildConfigField "String", "FOO_STRING", "\"foo\""
 ```
 
 **配置int类型，如下**
 
 buildConfigField "int", "PARSE_API_ID", PARSE_API_ID
+
+**配置资源类型，如下**
+
+```
+resValue "string", "flavor_name", "Red color is my favorite color"
+resValue "integer", "flavor_index", "4"
+resValue "dimen", "flavor_margin", "5dp"
+resValue "color", "flavor_color", "#ff0000"
+```
+
+访问时可以用 @string/flavor_name 或者 flavor_name
 
 ## 未完待续
 
