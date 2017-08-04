@@ -244,6 +244,20 @@ sdk install gradle
 
 [http://sdkman.io/install.html](http://sdkman.io/install.html)
 
+### 一些例子
+
+* 查看gradle的版本列表
+
+```
+sdk list gradle  
+```
+
+* 设置gradle的版本
+
+```
+sdk default gradle 2.14.1
+```
+
 ## 未完待续
 
 > 其他的一些有用的命令后面再慢慢总结，敬请期待！
